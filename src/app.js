@@ -51,7 +51,7 @@ const pdf = async url => {
 
 const hypothesis = () => {
   window.hypothesisConfig = () => ({
-    // 'openSidebar': true,
+    'openSidebar': window.innerWidth > 900,
   })
 
   const script = document.createElement('script')
