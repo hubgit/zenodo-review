@@ -1,0 +1,15 @@
+{
+  "name": "zenodo-review",
+  "license": "MIT",
+  "files": ["src"],
+  "dependencies": {
+    "serve": "^6.4.3"
+  },
+  "scripts": {
+    "deploy": "now --public && now alias",
+    "start": "serve src --single"
+  },
+  "now": {
+    "alias": "zenodo-review"
+  }
+}
