@@ -52,7 +52,11 @@ const zenodo = async id => {
 const pdf = async url => {
   const container = document.getElementById('viewerContainer')
 
-  const pdfViewer = new PDFJS.PDFViewer({ container })
+  const pdfViewer = new PDFJS.PDFViewer({
+    container,
+    removePageBorders: true,
+    enhanceTextSelection: true,
+  })
 
   container.addEventListener('pagesinit', function () {
     pdfViewer.currentScaleValue = 'page-width'
