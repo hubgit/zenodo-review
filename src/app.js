@@ -12,41 +12,21 @@ const largestFirst = (a, b) => b.size - a.size
 
 const isPdf = item => item['mimetype'] === 'application/pdf'
 
-// const addAlternateLink = url => {
-//   const link = document.createElement('link')
-//   link.setAttribute('rel', 'alternate')
-//   link.setAttribute('type', 'application/pdf')
-//   link.setAttribute('href', url)
-//   document.head.appendChild(link)
-// }
-
-// const addMetaLink = url => {
-//   const meta = document.createElement('meta')
-//   meta.setAttribute('name', 'citation_pdf_url')
-//   meta.setAttribute('content', url)
-//   document.head.appendChild(meta)
-// }
-
 const addCanonicalLink = url => {
   const link = document.createElement('link')
   link.setAttribute('rel', 'canonical')
-  link.setAttribute('href', url.replace(/^https:\/\/doi\.org\//, 'doi:'))
+  link.setAttribute('href', url)
   document.head.appendChild(link)
 }
 
 const zenodo = async id => {
   const record = await resource(`https://zenodo.org/api/records/${id}`)
 
-  // addCanonicalLink(record.links.doi)
+  // addCanonicalLink(record.links.doi.replace(/^https:\/\/doi\.org\//, 'doi:'))
 
   const bucket = await resource(record.links.bucket)
-  const pdf = bucket.contents.sort(largestFirst).find(isPdf).links.self
 
-  addCanonicalLink(pdf)
-  // addMetaLink(pdf)
-  // addAlternateLink(pdf)
-
-  return pdf
+  return bucket.contents.sort(largestFirst).find(isPdf).links.self
 }
 
 const pdf = async url => {
@@ -58,13 +38,15 @@ const pdf = async url => {
     enhanceTextSelection: true,
   })
 
-  container.addEventListener('pagesinit', function () {
+  container.addEventListener('pagesinit', () => {
     pdfViewer.currentScaleValue = 'page-width'
   })
 
   const pdfDocument = await PDFJS.getDocument(url)
 
   pdfViewer.setDocument(pdfDocument)
+
+  addCanonicalLink('urn:x-pdf:' + pdfDocument.fingerprint)
 }
 
 const hypothesis = () => {
