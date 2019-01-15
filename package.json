@@ -3,7 +3,7 @@
   "license": "MIT",
   "files": ["src"],
   "dependencies": {
-    "serve": "^6.4.3"
+    "serve": "^10.1.1"
   },
   "scripts": {
     "deploy": "now --public && now alias",
